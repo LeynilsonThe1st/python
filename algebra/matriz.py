@@ -1,5 +1,10 @@
 """
-@author: Leynilson Harden
+@author: <leinilsonsn@gmail.com> Leynilson Harden
+
+Este modulo contem funcoes para manipular matrizes e realizar operacoes basicas com matrizes
+
+# todo: calcular matriz inversa
+# todo: calcular determinante para matrizes quadradas onde `n` > 2
 """
 class Matriz:
     """ Classe com funcionalidades para manipular matrizes """
@@ -40,8 +45,6 @@ class Matriz:
     # del mat[i]
     def __delitem__(self, i):
         raise NotImplementedError('Não pode remover elementos de uma matriz')
-        # if index in self.mat:
-        #     del self.mat[index]
 
     # value in mat
     def __contains__(self, value):
@@ -54,39 +57,29 @@ class Matriz:
     # mat + mat
     def __add__(self, mat):
         return Matriz(soma_matriz(self, mat))
-        # res = []
-        # for (i, l1), l2 in zip(enumerate(self.mat), mat.mat):
-        #     res.append([])
-        #     for el1, el2 in zip(l1, l2):
-        #         # print(el1, el2, el1 + el2)
-        #         res[i].append(el1 + el2)
-        # return Matriz(res)
 
     # mat - mat
     def __sub__(self, mat):
         return Matriz(soma_matriz(self, -mat))
-        # res = []
-        # for (i, l1), l2 in zip(enumerate(self), mat):
-        #     res.append([])
-        #     for el1, el2 in zip(l1, l2):
-        #         res[i].append(el1 - el2)
-        # return Matriz(res)
 
-    # mat * mat
+    # mat * mat ou escalr * mat
     def __mul__(self, value):
         if not isinstance(value, (int, Matriz)):
             raise ValueError
         return Matriz(mult_escalar(self, value) if isinstance(value, int) else mult_matriz(self, value))
 
-    # mat * mat
+    # mat * mat ou escalr * mat
     def __rmul__(self, value):
         if not isinstance(value, (int, Matriz)):
             raise ValueError
         return Matriz(mult_escalar(self, value) if isinstance(value, int) else mult_matriz(self, value))
 
+    # mat ** 1 retorna a matriz transposta
     def __pow__(self, value):
         if value == 1:
             return Matriz(transpor(self))
+
+        # todo: calcular a mtriz inversa caso -1 for passado como parametro
 
 
 
@@ -97,18 +90,24 @@ def linhas(mat, n):
 def colunas(mat, n):
     return [i[n] for i in mat]
 
-def construir(lin, col, f=None):
+def construir(lin, col, func=None):
+    """
+    Constroi uma matriz com `lin` linhas e `col` colunas
+    preenchedo em cada pos `mat[i][j]` o valor de retorno da funcao `f`.
+
+    A funcao `f` tem como parametros `f(i, j)`
+    """
     res = []
     for i in range(lin):
         res.append([])
         for j in range(col):
-            if f is not None:
-                res[i].append(f(i+1, j+1))
+            if func is not None:
+                res[i].append(func(i, j))
             else:
                 res[i].append(f"a{i+1}{j+1}")
     return res
 
-def percorrer(mat, f=None):
+def percorrer(mat, func=None):
     """
     percorre a matriz e aplica uma funcao definida pelo usuario.\n
     Caso nenhuma funcao seja passada, retorna uma copia da matriz
@@ -118,24 +117,21 @@ def percorrer(mat, f=None):
     # `i`: index dos elemento de cada linha\n
     # `j`: index das linhas
     """
-    return [[a if f is None else f(a, i, j) for i, a in enumerate(l)] for j, l in enumerate(mat)]
+    return [[a if func is None else func(a, i, j) for i, a in enumerate(l)] for j, l in enumerate(mat)]
 
 def transpor(mat):
-    # return [[mat[j][i] for j in range(len(mat))] for i in range(len(mat[0]))]
+    """ Retorna a matriz transposta """
     return [[j[i] for j in mat] for i in range(len(mat[0]))]
 
 def soma_matriz(m1, m2):
+    """ Soma duas matrizes """
     if len(m1) != len(m2) or len(m1[0]) != len(m2[0]):
         raise ValueError("As matrizes devem ter o mesmo número de linhas e de colunas")
     return [[m1[i][j] + m2[i][j] for j in range(len(m1[i]))] for i in range(len(m1))]
 
-    # try:
-    #     return [[m1[i][j] + m2[i][j] for j in range(len(m1[i]))] for i in range(len(m1))]
-    # except Exception:
-    #     print('As matrizes devem ter o mesmo número de linhas e de colunas')
-    #     raise
 
 def mult_escalar(mat, escalar):
+    """ Multiplica uma matriz por um número """
     res = []
     for i, linha in enumerate(mat):
         res.append([])
@@ -144,6 +140,9 @@ def mult_escalar(mat, escalar):
     return res
 
 def mult_matriz(mat1, mat2):
+    """multiplica duas matrizes"""
+    if len(mat1[0]) != len(mat2):
+        raise ValueError("O número de colunas da 1ª matriz não é igual ao número de linhas da 2ª")
     res = []
     for i in range(len(mat1)):
         res.append([])
@@ -153,26 +152,19 @@ def mult_matriz(mat1, mat2):
     return res
 
 def det(mat):
+    """ calcula o determinane. work in progress """
     if len(mat) == len(mat[0]):
         if len(mat) == 2:
             print(bonificar(mat))
             print(mat[0][0] * mat[1][1] - mat[0][1] - mat[1][0])
             return mat[0][0] * mat[1][1] - mat[0][1] - mat[1][0]
         if len(mat) > 2:
-            # res = 0
-            # for i in range(len(mat)):
-            #     for j in range(len(mat[i])):
-            #         if i+2 % 2 == 0:
-            #             res += mat[i][j] * det(cofactores(mat, i, j))
-            #         else:
-            #             res -= mat[i][j] * det(cofactores(mat, i, j))
-            #         # res += ((-1 ** (2 + i)) * mat[i][j]) * det(cofactores(mat, i, j))
-            # return res
             return sum([x * (-1**(2+j) * det(cofactores(mat, 0, j))) for j, x in enumerate(mat[0])])
 
 
 
 def cofactores(mat, i, j):
+    """ retorna a matriz dos cofactores """
     res = []
     c1 = 0
     for x in range(len(mat)):
@@ -187,17 +179,8 @@ def cofactores(mat, i, j):
             else:
                 res[x - c1].append(mat[x][y])
     return res
-    # return [[mat[x][y] if i != x and j != y else None for y in range(len(mat))] for x in range(len(mat))]
 
 
 def bonificar(mat):
     res = "".join(str(mat))
     return res.replace('],', ']\n').replace('[[', '[\n [').replace(']]', ']\n]\n')
-
-# def transpor(mat):
-#     res = []
-#     for i in range(len(mat[0])):
-#         res.append([])
-#         for j in range(len(mat)):
-#             res[i].append(mat[j][i])
-#     return res
