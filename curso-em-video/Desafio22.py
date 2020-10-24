@@ -1,0 +1,6 @@
+nome = input('Qual eh o seu nome? ')
+print(nome.upper())
+print(nome.lower())
+print(len(nome.strip()))
+prim = nome.split()
+print = input(prim[0])
