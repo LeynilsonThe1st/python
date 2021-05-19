@@ -13,4 +13,4 @@ def mdc(dividendo, divisor):
 
 print(mdc(1112, 695))
 print(mdc(14370, 12080))
-print(mdc(6, 12))
+print(mdc(780, 56))

@@ -46,16 +46,16 @@ def sequencia(vector, rigido=False):
     return lista, maior_seq, pos
 
 
-def ver_maior_seq(limite=10000):
+def ver_maior_seq(limite=50000):
     """
-    Executa a função `sequencia()` o numero de vezes definidas (default = 1000)\n
+    Executa a função `sequencia()` o numero de vezes definidas (default = 10000)\n
     retorna `tuple` com 3 itens:\n
     [0] = a lista formatada com a maior sequência -> str;\n
     [1] = a quantidade de números da maior sequência -> int;\n
     [2] = a posição do primeiro número da maior sequência -> int;
     """
     # arr = [x for x in range(30, 0, -1)]
-    # arr = [x for x in range(1, 11)]
+    # arr = [x for x in range(11, 1, -1)]
     arr = [rd(1, 99) for x in range(1, 11)]
     # arr = [10 for x in range(1, 11)]
     lst2 = ""
@@ -79,17 +79,17 @@ def thead():
 
 # print("| {:<26} | {:<24} | {:<5} |")
 thead()
-for x in range(1, 31):
-    LST, TMS, PPI, = ver_maior_seq(50000)
+for x in range(1, 51):
+    LST, TMS, PPI, = ver_maior_seq()
 
     if PPI == 0 and TMS == 1:
         print(f"| {LST:<40} | {PPI:>24} | {TMS:>26} |")
     else:
         print(f"| {LST:<50} | {PPI:>24} | {TMS:>26} |")
 
-    if x % 10 == 0 and x != 30:
+    if x % 10 == 0 and x != 50:
         print("-" * 100)
-        sleep(3)
+        sleep(5)
         thead()
     else:
         print("+-" + ("-" * 40) + "-+-" + ("-" * 24) + "-+-" + ("-" * 26) + "-+")

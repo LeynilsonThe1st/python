@@ -32,7 +32,7 @@ class Janela1(Frame):
         self.ola.pack()
 
     def dizer_ola(self, event):
-        self.ola['text'] = f"Olá {self.nome.get().capitalize()}!"
+        self.ola['text'] = "Ola {}!".format(self.nome.get().capitalize())
         if any(self.ola.cget('text')):
             self.ola.pack()
         else:

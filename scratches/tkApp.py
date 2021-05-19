@@ -11,13 +11,13 @@ if __name__ == '__main__':
 	def mudar_txt():
 		if input_text.get() != "":
 			txt = input_text.get().strip().title()
-			titulo.configure(text=f"{txt} App")
+			titulo.configure(text=txt + App)
 			return
 		
 		titulo.configure(text="Tkinter App")
 
 	def mostrar():
-		cb = f"ComboBox : {combo.get()}"
+		cb = "ComboBox : " + combo.get()
 
 		messagebox.askquestion(title="Your Data", message=cb)
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 	frame3 = tk.Frame(container, relief=RIDGE)
 	frame3.pack(anchor=N+W, side=LEFT, expand=YES, fill=BOTH)
 
-	img = tk.PhotoImage(file="/Users/leynilson_harden/Dropbox/Programação/PycharmProjects/python/scratches/android.png")
+	img = tk.PhotoImage(file="/home/leynilson/Pictures/Wallpapers/VgqiT0d.jpg")
     
 	tk.Label(container, image=img).pack(anchor=E, side=LEFT)
 
